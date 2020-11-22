@@ -2,12 +2,12 @@ import org.junit.Test;
 
 import java.util.HashMap;
 
-import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.*;
 
 public class HandleTruthTest {
     @Test
     public void makeshiftTest() {
-        HandleTruth.wordCount(getTestCase(2));
+        HandleTruth.wordCount(getTestCase(3));
     }
 
     @Test
@@ -29,8 +29,17 @@ public class HandleTruthTest {
     }
 
     @Test
-    public void test2(){
-        //code
+    //test if a specific string is contained in a dictionary
+    public void testContains(){
+        HashMap<String, Integer> testMap = HandleTruth.wordCount(getTestCase(0));
+        //The quick brown fox jumps over the lazy dog.
+        String[] expected = getExpectedContains(0);
+
+        for(int i = 0; i < expected.length; i++){
+            assertTrue(testMap.containsKey(expected[i]));
+        }
+
+        assertFalse(testMap.containsKey("test"));
     }
 
     @Test
@@ -62,6 +71,10 @@ public class HandleTruthTest {
                 testCase = "are, are. are these, these. these the, the. the same, same. same";
                 //each word followed by some punctuation. Same words, different punctuation, different key values
                 break;
+            case 3:
+                testCase = "";
+                //just an empty string
+                break;
             default:
                 break;
         }
@@ -88,6 +101,29 @@ public class HandleTruthTest {
                 break;
             case 2:
                 expected = new int[]{1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1};
+                break;
+            case 3:
+                expected = new int[]{};
+                break;
+            default:
+                break;
+        }
+
+        return expected;
+    }
+
+    public static String[] getExpectedContains(int caseNum){
+        String[] expected = null;
+        switch(caseNum){
+            case 0:
+                expected = new String[]{"The", "quick", "brown", "fox", "jumps", "over", "the", "lazy", "dog."};
+                break;
+            case 1:
+                expected = new String[]{"once", "twice", "thrice", "quads"};
+                break;
+            case 2:
+                expected = new String[]{"are,", "are.", "are", "these,", "these.", "these", "the,", "the.", "the",
+                                        "same,", "same.", "same"};
                 break;
             default:
                 break;
