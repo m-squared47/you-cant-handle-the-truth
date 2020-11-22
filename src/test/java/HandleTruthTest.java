@@ -91,9 +91,79 @@ public class HandleTruthTest {
         //String should be removed and not replaced by a blank character
 
     @Test
-    public void test5(){
-        //code
-    }
+    //tests 1-3 all together
+    public void testHandleTruth(){
+        String text =   "Peter Piper picked a peck of pickled peppers. A peck of pickled peppers Peter Piper picked. " +
+                        "If Peter Piper picked a peck of pickled peppers. Where's the peck of pickled peppers Peter " +
+                        "Piper picked?";
+
+        Map<String, Integer> testCase =
+                (Map<String, Integer>)HandleTruth.wordCount(text, true);
+        TreeMap<Integer, Set<String>> sorted =
+                (TreeMap<Integer, Set<String>>)HandleTruth.wordCount(text, false);
+
+
+        //testing contains
+        String[] expectedContains = new String[]{
+                "Peter", "Piper", "picked", "a", "peck", "of", "pickled", "peppers.", "A", "picked.", "If", "Where's",
+                "peppers", "the", "picked?"
+        };
+
+        for(String word : expectedContains){
+            assertTrue(testCase.containsKey(word));
+        }
+
+        //testing count
+        String[] wordSplit = text.split(" ");
+
+        int[] expectedCount = new int[]{
+                4, 4, 2, 2, 4, 4, 4, 2, 1, 4, 4, 4, 2, 4, 4, 1, 1, 4, 4, 2, 2, 4, 4, 4, 2,
+                1, 1, 4, 4, 4, 2, 4, 4, 1
+
+                //with help from http://www.writewords.org.uk/word_count.asp (word counter)
+        };
+
+        for(int i = 0; i < wordSplit.length; i++){
+            int count = testCase.get(wordSplit[i]);
+            assertEquals(expectedCount[i], count);
+        }
+
+        //testing sort
+        Set<Set<String>> expectedSort = new HashSet<>();
+        Set<String> timesFour = new HashSet<>();
+        Set<String> timesTwo = new HashSet<>();
+        Set<String> timesOne = new HashSet<>();
+
+        //set order is picky, in order by recently used and most used to least used
+        timesFour.add("pickled");
+        timesFour.add("of");
+        timesFour.add("peck");
+        timesFour.add("Peter");
+        timesFour.add("Piper");
+
+        timesTwo.add("a");
+        timesTwo.add("peppers");
+        timesTwo.add("picked");
+        timesTwo.add("peppers.");
+
+        timesOne.add("the");
+        timesOne.add("A");
+        timesOne.add("picked.");
+        timesOne.add("picked?");
+        timesOne.add("Where's");
+        timesOne.add("If");
+
+        expectedSort.add(timesFour);
+        expectedSort.add(timesTwo);
+        expectedSort.add(timesOne);
+
+        for(Map.Entry<Integer, Set<String>> entry : sorted.entrySet()){
+            assertTrue(expectedSort.contains(entry.getValue()));
+        }
+
+    }//this is a test with all major tests. If passed, the code works altogether.
+     //in practical use, the smaller tests are used for bug testing and development
+     //this test is used to see if the entire code works as a whole.
 
     //All test case and expected case getters
     public static String getTestCase(int caseNum){
