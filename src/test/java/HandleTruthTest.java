@@ -1,13 +1,13 @@
 import org.junit.Test;
 
-import java.util.HashMap;
+import java.util.*;
 
 import static org.junit.Assert.*;
 
 public class HandleTruthTest {
     @Test
     public void makeshiftTest() {
-        HandleTruth.wordCount(getTestCase(3));
+        HandleTruth.wordCount(getTestCase(3), true);
     }
 
     @Test
@@ -16,7 +16,7 @@ public class HandleTruthTest {
         for(int j = 0; j <= 2; j++) {
             String testCase = getTestCase(j);
             int[] expected = getExpectedCount(j);
-            HashMap<String, Integer> actual = HandleTruth.wordCount(testCase);
+            Map<String, Integer> actual = (Map<String, Integer>)HandleTruth.wordCount(testCase, true);
             String[] words = testCase.split(" ");
 
             int i = 0;
@@ -26,12 +26,13 @@ public class HandleTruthTest {
                 i++;
             }
         }
-    }
+    }   //test passes, words are counted correctly
 
     @Test
     //test if a specific string is contained in a dictionary
     public void testContains(){
-        HashMap<String, Integer> testMap = HandleTruth.wordCount(getTestCase(0));
+        Map<String, Integer> testMap =
+                (Map<String, Integer>)HandleTruth.wordCount(getTestCase(0), true);
         //The quick brown fox jumps over the lazy dog.
         String[] expected = getExpectedContains(0);
 
@@ -40,12 +41,39 @@ public class HandleTruthTest {
         }
 
         assertFalse(testMap.containsKey("test"));
-    }
+    }//test passes, all required strings are included.
 
     @Test
-    public void test3(){
-        //code
-    }
+    //test if the sorted array is correct
+    public void testSorted(){
+        TreeMap<Integer, Set<String>> sorted =
+                (TreeMap<Integer, Set<String>>)HandleTruth.wordCount(getTestCase(1), false);
+
+        Set<Set<String>> expected = new HashSet<>();
+        Set<String> once = new HashSet<>();
+        once.add("once");
+        Set<String> twice = new HashSet<>();
+        for(int i = 0; i < 2; i++){
+            twice.add("twice");
+        }
+        Set<String> thrice = new HashSet<>();
+        for(int i = 0; i < 3; i++){
+            thrice.add("thrice");
+        }
+        Set<String> quads = new HashSet<>();
+        for(int i = 0; i < 4; i++){
+            quads.add("quads");
+        }
+        expected.add(once);
+        expected.add(twice);
+        expected.add(thrice);
+        expected.add(quads);
+
+        for(Map.Entry<Integer, Set<String>> entry : sorted.entrySet()){
+            assertTrue(expected.contains(entry.getValue()));
+        }
+    }//test passes, all words are counted correctly
+
     @Test
     public void test4(){
         //code
@@ -56,6 +84,7 @@ public class HandleTruthTest {
         //code
     }
 
+    //All test case and expected case getters
     public static String getTestCase(int caseNum){
         String testCase = null;
         switch(caseNum){
