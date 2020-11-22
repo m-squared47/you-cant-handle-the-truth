@@ -75,9 +75,20 @@ public class HandleTruthTest {
     }//test passes, all words are counted correctly
 
     @Test
-    public void test4(){
-        //code
-    }
+    //test case 3 (empty string input)
+    public void testEmptyInput(){
+        Map<String, Integer> testMap =
+                (Map<String, Integer>)HandleTruth.wordCount(getTestCase(3), true);
+        String stringOfZero = "[";
+        stringOfZero = stringOfZero.replace("[", "");
+        //string length of 0
+        assertEquals(0, stringOfZero.length());
+
+        for(Map.Entry<String, Integer> entry : testMap.entrySet()){
+            assertEquals(stringOfZero.length(), entry.getKey().length());
+        }
+    }   //test passes, the space is removed and the only string left is a string length of 0
+        //String should be removed and not replaced by a blank character
 
     @Test
     public void test5(){
